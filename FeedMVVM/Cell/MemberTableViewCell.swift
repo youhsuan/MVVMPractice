@@ -8,13 +8,14 @@
 
 import UIKit
 
-class MemberTableViewCell: UITableViewCell {
+class MemberTableViewCell: UITableViewCell, CellConfiguration {
 
     @IBOutlet weak var profileImgView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
     
-    func setup(viewModel: MemberViewModel){
+    func setup(viewModel: DataViewModel){
+        guard let viewModel = viewModel as? MemberViewModel else { return }
         self.nameLabel.text = viewModel.name
         self.profileImgView.image = viewModel.image
         self.addButton.isHidden = isSelected

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MemberViewModel: CellViewModel{
+class MemberViewModel: DataViewModel{
     let name: String
     let isSelected: Bool
     let image: UIImage

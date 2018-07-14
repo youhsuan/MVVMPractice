@@ -8,13 +8,14 @@
 
 import UIKit
 
-class FeedsTableViewCell: UITableViewCell {
+class FeedsTableViewCell: UITableViewCell, CellConfiguration {
     
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     
-    func setup(viewModel: PhotoViewModel){
+    func setup(viewModel: DataViewModel) {
+        guard let viewModel = viewModel as? PhotoViewModel else { return }
         self.photoView.image = viewModel.photoImg
         self.titleLabel.text = viewModel.title
         self.contentLabel.text = viewModel.content

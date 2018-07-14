@@ -1,5 +1,5 @@
 //
-//  CellViewModel.swift
+//  CellConfiguration.swift
 //  FeedMVVM
 //
 //  Created by youhsuan on 2018/7/14.
@@ -8,4 +8,6 @@
 
 import Foundation
 
-protocol CellViewModel {}
+protocol CellConfiguration {
+    func setup(viewModel: DataViewModel)
+}

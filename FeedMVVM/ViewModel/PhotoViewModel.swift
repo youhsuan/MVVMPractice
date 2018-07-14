@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class PhotoViewModel: CellViewModel{
+class PhotoViewModel: DataViewModel{
     let title: String
     let content: String
     let photoImg: UIImage

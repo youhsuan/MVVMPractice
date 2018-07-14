@@ -11,7 +11,7 @@ import UIKit
 class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tableView = UITableView()
-    var viewModel: [CellViewModel] = [
+    var viewModel: [DataViewModel] = [
         PhotoViewModel(title: "11111", content: "12341234134", photoImg: UIImage(named: "sample")!),
         MemberViewModel(name: "aaaaa", isSelected: false, image: UIImage(named: "profile")!),
         PhotoViewModel(title: "22222", content: "456789skjhljhsljdh", photoImg: UIImage(named: "sample")!),
@@ -26,8 +26,8 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
         self.tableView.dataSource = self
         self.tableView.frame = UIScreen.main.bounds
         self.view.addSubview(self.tableView)
-        self.tableView.register(UINib(nibName: "FeedsTableViewCell", bundle: nil), forCellReuseIdentifier: "cellPhoto")
-        self.tableView.register(UINib(nibName: "MemberTableViewCell", bundle: nil), forCellReuseIdentifier: "cellMember")
+        self.tableView.register(UINib(nibName: "FeedsTableViewCell", bundle: nil), forCellReuseIdentifier: FeedsTableViewCell.cellIdentifier())
+        self.tableView.register(UINib(nibName: "MemberTableViewCell", bundle: nil), forCellReuseIdentifier: MemberTableViewCell.cellIdentifier())
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -48,22 +48,21 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let data = viewModel[indexPath.row]
         
-        if let photoViewModel = data as? PhotoViewModel {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cellPhoto", for: indexPath) as? FeedsTableViewCell
-           
-            cell?.setup(viewModel: photoViewModel)
-           
-            return cell!
-        }
-        else if let memberViewModel = data as? MemberViewModel {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cellMember", for: indexPath) as? MemberTableViewCell
-            
-            cell?.setup(viewModel: memberViewModel)
-            
-            return cell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: self.getCellIdentifier(viewModel: data), for: indexPath)
+        
+        if let cell = cell as? CellConfiguration {
+            cell.setup(viewModel: data)
         }
         
-        return UITableViewCell()
+        return cell
+    }
+    
+    func getCellIdentifier(viewModel :DataViewModel) -> String {
+        switch viewModel {
+            case is PhotoViewModel : return FeedsTableViewCell.cellIdentifier()
+            case is MemberViewModel: return MemberTableViewCell.cellIdentifier()
+            default: fatalError("Unexpected view model type: \(viewModel)")
+        }
     }
 
 }
