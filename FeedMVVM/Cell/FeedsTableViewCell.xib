@@ -53,9 +53,9 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="content" destination="dv3-1d-dEk" id="7kD-av-k7W"/>
-                <outlet property="photo" destination="vZy-UV-aP3" id="Pbb-7q-g4q"/>
-                <outlet property="title" destination="IrU-Mm-eEC" id="3ay-vA-hci"/>
+                <outlet property="contentLabel" destination="dv3-1d-dEk" id="yWv-eJ-40O"/>
+                <outlet property="photoView" destination="vZy-UV-aP3" id="aJI-Rd-h8c"/>
+                <outlet property="titleLabel" destination="IrU-Mm-eEC" id="qAp-ke-jLJ"/>
             </connections>
             <point key="canvasLocation" x="-106" y="-49.5"/>
         </tableViewCell>

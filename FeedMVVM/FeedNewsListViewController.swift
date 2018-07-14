@@ -11,13 +11,13 @@ import UIKit
 class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tableView = UITableView()
-    var feeds: [Feed] = [
-        Photo(title: "11111", context: "12341234134", photoImage: UIImage(named: "sample")!),
-        Member(name: "aaaaa", isSelected: false, image: UIImage(named: "profile")!),
-        Photo(title: "22222", context: "456789skjhljhsljdh", photoImage: UIImage(named: "sample")!),
-        Photo(title: "33333", context: "456789skjhljhsljdh", photoImage: UIImage(named: "sample")!),
-        Member(name: "bbbbb", isSelected: false, image: UIImage(named: "profile")!),
-        Photo(title: "44444", context: "456789skjhljhsljdh", photoImage: UIImage(named: "sample")!)
+    var viewModel: [CellViewModel] = [
+        PhotoViewModel(title: "11111", content: "12341234134", photoImg: UIImage(named: "sample")!),
+        MemberViewModel(name: "aaaaa", isSelected: false, image: UIImage(named: "profile")!),
+        PhotoViewModel(title: "22222", content: "456789skjhljhsljdh", photoImg: UIImage(named: "sample")!),
+        PhotoViewModel(title: "33333", content: "456789skjhljhsljdh", photoImg: UIImage(named: "sample")!),
+        MemberViewModel(name: "bbbbb", isSelected: false, image: UIImage(named: "profile")!),
+        PhotoViewModel(title: "44444", content: "456789skjhljhsljdh", photoImg: UIImage(named: "sample")!)
     ]
 
     override func viewDidLoad() {
@@ -34,35 +34,31 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let feed = feeds[indexPath.row]
-        if feed is Member {
+        let dataSource = viewModel[indexPath.row]
+        if dataSource is MemberViewModel {
             return 70
         }
         return 100
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.feeds.count
+        return self.viewModel.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let feed = feeds[indexPath.row]
+        let data = viewModel[indexPath.row]
         
-        if let photoFeed = feed as? Photo {
+        if let photoViewModel = data as? PhotoViewModel {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cellPhoto", for: indexPath) as? FeedsTableViewCell
-            
-            cell?.title.text = photoFeed.title
-            cell?.content.text = photoFeed.context
-            cell?.photo.image = photoFeed.photoImage
-            
+           
+            cell?.setup(viewModel: photoViewModel)
+           
             return cell!
         }
-        else if let memberFeed = feed as? Member {
+        else if let memberViewModel = data as? MemberViewModel {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cellMember", for: indexPath) as? MemberTableViewCell
             
-            cell?.profileImg.image = memberFeed.image
-            cell?.name.text = memberFeed.name
-            cell?.addButton.isHidden = (memberFeed.isSelected)
+            cell?.setup(viewModel: memberViewModel)
             
             return cell!
         }

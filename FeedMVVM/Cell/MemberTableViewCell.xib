@@ -57,8 +57,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="addButton" destination="FzK-oC-29N" id="wZj-ho-LYH"/>
-                <outlet property="name" destination="2yt-4y-TPx" id="EKv-SY-9T2"/>
-                <outlet property="profileImg" destination="gmY-vG-jqG" id="7H8-nN-Lzg"/>
+                <outlet property="nameLabel" destination="2yt-4y-TPx" id="Ajk-UW-dC7"/>
+                <outlet property="profileImgView" destination="gmY-vG-jqG" id="xaU-uu-8Mc"/>
             </connections>
             <point key="canvasLocation" x="-46.5" y="-18.5"/>
         </tableViewCell>

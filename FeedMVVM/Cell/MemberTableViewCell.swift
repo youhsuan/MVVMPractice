@@ -1,5 +1,5 @@
 //
-//  FeedsTableViewCell.swift
+//  MemberTableViewCell.swift
 //  FeedMVVM
 //
 //  Created by youhsuan on 2018/7/13.
@@ -8,11 +8,18 @@
 
 import UIKit
 
-class FeedsTableViewCell: UITableViewCell {
+class MemberTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var profileImgView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var addButton: UIButton!
     
-    @IBOutlet weak var photo: UIImageView!
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var content: UILabel!
+    func setup(viewModel: MemberViewModel){
+        self.nameLabel.text = viewModel.name
+        self.profileImgView.image = viewModel.image
+        self.addButton.isHidden = isSelected
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
