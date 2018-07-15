@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FeedsTableViewCell: UITableViewCell, CellConfiguration {
+class PhotoTableViewCell: UITableViewCell, CellConfiguration{
     
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -23,7 +23,6 @@ class FeedsTableViewCell: UITableViewCell, CellConfiguration {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

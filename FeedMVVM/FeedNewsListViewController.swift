@@ -11,14 +11,8 @@ import UIKit
 class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tableView = UITableView()
-    var viewModel: [DataViewModel] = [
-        PhotoViewModel(title: "11111", content: "12341234134", photoImg: UIImage(named: "sample")!),
-        MemberViewModel(name: "aaaaa", isSelected: false, image: UIImage(named: "profile")!),
-        PhotoViewModel(title: "22222", content: "456789skjhljhsljdh", photoImg: UIImage(named: "sample")!),
-        PhotoViewModel(title: "33333", content: "456789skjhljhsljdh", photoImg: UIImage(named: "sample")!),
-        MemberViewModel(name: "bbbbb", isSelected: false, image: UIImage(named: "profile")!),
-        PhotoViewModel(title: "44444", content: "456789skjhljhsljdh", photoImg: UIImage(named: "sample")!)
-    ]
+    var viewModels: [DataViewModel] = []
+    let dataSource = FetchedViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,15 +20,30 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
         self.tableView.dataSource = self
         self.tableView.frame = UIScreen.main.bounds
         self.view.addSubview(self.tableView)
-        self.tableView.register(UINib(nibName: "FeedsTableViewCell", bundle: nil), forCellReuseIdentifier: FeedsTableViewCell.cellIdentifier())
+        self.tableView.register(UINib(nibName: "PhotoTableViewCell", bundle: nil), forCellReuseIdentifier: PhotoTableViewCell.cellIdentifier())
         self.tableView.register(UINib(nibName: "MemberTableViewCell", bundle: nil), forCellReuseIdentifier: MemberTableViewCell.cellIdentifier())
+        
+        self.viewModels = self.dataSource.getData()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        for viewModel in self.viewModels {
+            if let photoVM = viewModel as? PhotoViewModel {
+                photoVM.cellPressed = { () in
+                    print("photoCell has been pressed")
+                }
+            }
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let dataSource = viewModel[indexPath.row]
+        let dataSource = viewModels[indexPath.row]
         if dataSource is MemberViewModel {
             return 70
         }
@@ -42,24 +51,29 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.count
+        return self.viewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let data = viewModel[indexPath.row]
-        
+        let data = viewModels[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: self.getCellIdentifier(viewModel: data), for: indexPath)
-        
         if let cell = cell as? CellConfiguration {
             cell.setup(viewModel: data)
         }
-        
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = viewModels[indexPath.row]
+        
+        if let viewModel = data as? ViewModelPressible {
+            viewModel.cellPressed?()
+        }
+        
+    }
     
-    func getCellIdentifier(viewModel :DataViewModel) -> String {
+    private func getCellIdentifier(viewModel :DataViewModel) -> String {
         switch viewModel {
-            case is PhotoViewModel : return FeedsTableViewCell.cellIdentifier()
+            case is PhotoViewModel : return PhotoTableViewCell.cellIdentifier()
             case is MemberViewModel: return MemberTableViewCell.cellIdentifier()
             default: fatalError("Unexpected view model type: \(viewModel)")
         }

@@ -10,4 +10,6 @@ import Foundation
 
 protocol DataViewModel {}
 
-
+protocol ViewModelPressible {
+    var cellPressed: (()->Void)? {get set}
+}
