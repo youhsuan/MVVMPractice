@@ -8,11 +8,15 @@
 
 import UIKit
 
-class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DataViewModelDelegate{
+    
+    func getData(_ manager: FeedNewsManager, didGetData viewModel: [DataViewModel]) {
+        self.viewModels = viewModel
+    }
     
     var tableView = UITableView()
     var viewModels: [DataViewModel] = []
-    let dataSource = FetchedViewModel()
+    let dataSourceManager = FeedNewsManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +27,9 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
         self.tableView.register(UINib(nibName: "PhotoTableViewCell", bundle: nil), forCellReuseIdentifier: PhotoTableViewCell.cellIdentifier())
         self.tableView.register(UINib(nibName: "MemberTableViewCell", bundle: nil), forCellReuseIdentifier: MemberTableViewCell.cellIdentifier())
         
-        self.viewModels = self.dataSource.getData()
+        //  - setup FeedNewsManager dataSource
+        dataSourceManager.delegate = self
+        dataSourceManager.getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,8 +49,8 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let dataSource = viewModels[indexPath.row]
-        if dataSource is MemberViewModel {
+        let viewModel = viewModels[indexPath.row]
+        if viewModel is MemberViewModel {
             return 70
         }
         return 100
@@ -62,13 +68,13 @@ class FeedNewsListViewController: UIViewController, UITableViewDelegate, UITable
         }
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = viewModels[indexPath.row]
         
         if let viewModel = data as? ViewModelPressible {
             viewModel.cellPressed?()
         }
-        
     }
     
     private func getCellIdentifier(viewModel :DataViewModel) -> String {
